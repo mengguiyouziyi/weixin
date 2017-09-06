@@ -11,6 +11,7 @@ from get_info.settings import SQL_DATETIME_FORMAT
 
 class InfoSpider(scrapy.Spider):
 	name = 'info'
+
 	url = 'http://weixin.sogou.com/weixin?query={}&_sug_type_=&sut=1978&lkt=1%2C1504603223573%2C1504603223573&s_from=input&_sug_=y&type=1&sst0=1504603223676&page=1&ie=utf8&w=01019900&dr=1'
 
 	def start_requests(self):
