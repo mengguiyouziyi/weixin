@@ -26,18 +26,19 @@ def send_key(key):
 		loc = 0
 		while True:
 			# try:
-				cursor.scroll(loc, mode='absolute')
-				sql = """select pub_name,url_dt from weixin_base_info where feature='' ORDER by id limit 1000"""
-				cursor.execute(sql)
-				results = cursor.fetchall()
-				pub_names = [result['pub_name'] + '~' + result['url_dt'] for result in results]
-				position = len(pub_names)
-				for p in pub_names:
-					red.send_to_queue(key, p)
-					print(str(p))
-				loc += position
-				print('等待5秒')
-				time.sleep(5)
+
+			sql = """select pub_name,url_dt from weixin_base_info where feature='' ORDER by id limit 1000"""
+			cursor.execute(sql)
+			results = cursor.fetchall()
+			pub_names = [result['pub_name'] + '~' + result['url_dt'] for result in results]
+			position = len(pub_names)
+			for p in pub_names:
+				red.send_to_queue(key, p)
+				print(str(p))
+			loc += position
+			cursor.scroll(loc, mode='absolute')
+			print('等待5秒')
+			time.sleep(5)
 
 			# except:
 			# 	traceback.print_exc()
