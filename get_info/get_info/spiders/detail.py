@@ -12,14 +12,14 @@ sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8')
 
 class InfoSpider(scrapy.Spider):
 	name = 'detail'
-	# custom_settings = {
-	# 	'DOWNLOAD_DELAY': 3,
-	# 	'DOWNLOADER_MIDDLEWARES': {
-	#
-	# 		'get_info.middlewares.RetryMiddleware': 110,
-	# 		'get_info.middlewares.RotateUserAgentMiddleware': 2,
-	# 	}
-	# }
+	custom_settings = {
+		'DOWNLOAD_DELAY': 3,
+		# 'DOWNLOADER_MIDDLEWARES': {
+		#
+		# 	'get_info.middlewares.RetryMiddleware': 110,
+		# 	'get_info.middlewares.RotateUserAgentMiddleware': 2,
+		# }
+	}
 
 	def start_requests(self):
 		x = 0
@@ -49,7 +49,7 @@ class InfoSpider(scrapy.Spider):
 			return
 		if '验证码' in response.text:
 			retrys += 1
-			print('check')
+			print('check~~~~~%s' % response.url)
 			yield scrapy.Request(response.request.url, meta={'item': item, 'retrys': retrys}, dont_filter=True)
 		else:
 			select = Selector(response=response)
