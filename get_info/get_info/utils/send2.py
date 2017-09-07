@@ -2,7 +2,6 @@
 
 import os
 import traceback
-import time
 
 from os.path import dirname
 
@@ -24,8 +23,9 @@ def send_key(key):
 	cursor = mysql.cursor()
 	try:
 		loc = 0
+		# word_set = set()
 		while True:
-			# try:
+			try:
 				cursor.scroll(loc, mode='absolute')
 				sql = """select pub_name,url_dt from weixin_base_info where feature='' ORDER by id limit 1000"""
 				cursor.execute(sql)
@@ -33,16 +33,16 @@ def send_key(key):
 				pub_names = [result['pub_name'] + '~' + result['url_dt'] for result in results]
 				position = len(pub_names)
 				for p in pub_names:
+					# if p in word_set:
+					# 	continue
+					# word_set.add(p)
 					red.send_to_queue(key, p)
 					print(str(p))
 				loc += position
-				print('等待5秒')
-				time.sleep(5)
-
-			# except:
-			# 	traceback.print_exc()
-			# 	continue
-	except:
+			except Exception as e:
+				traceback.print_exc()
+				continue
+	except Exception as e:
 		traceback.print_exc()
 	finally:
 		mysql.close()
