@@ -44,17 +44,18 @@ def send_key(key):
 					words.append(d)
 
 			word_set = set(words)
+			red = QueueRedis()
+
+			for word in word_set:
+				red.send_to_queue(key, word)
+				print(str(word))
 
 	except Exception as e:
 		print(e)
 	finally:
 		mysql.close()
 
-	red = QueueRedis()
 
-	for word in word_set:
-		red.send_to_queue(key, word)
-		print(str(word))
 
 
 
