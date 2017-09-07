@@ -23,7 +23,7 @@ def send_key(key):
 	                        charset='utf8', cursorclass=pymysql.cursors.DictCursor)
 	cursor = mysql.cursor()
 	try:
-		loc = 0
+		# loc = 0
 		while True:
 			# try:
 
@@ -35,8 +35,8 @@ def send_key(key):
 			for p in pub_names:
 				red.send_to_queue(key, p)
 				print(str(p))
-			loc += position
-			cursor.scroll(loc, mode='absolute')
+			# loc += position
+			cursor.scroll(position, mode='relative')
 			print('等待5秒')
 			time.sleep(5)
 
