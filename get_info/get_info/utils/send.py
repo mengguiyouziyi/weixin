@@ -25,25 +25,27 @@ def send_key(key):
 			sql = """select shortname from comp_shortname"""
 			sql1 = """select project_nm from project_nm"""
 			print('execute begain')
-			cursor.execute(sql)
-			cursor.execute(sql1)
-			results = cursor.fetchall()
-			results1 = cursor.fetchall()
-			shortnames = [result['shortname'] for result in results]
-			project_nms = [result['project_nm'] for result in results1]
 			words = []
+
+			cursor.execute(sql)
+			results = cursor.fetchall()
+			shortnames = [result['shortname'] for result in results]
 			short_list = [list(jieba.cut(shortname)) for shortname in shortnames]
-			project_list = [list(jieba.cut(project_nm)) for project_nm in project_nms]
 			for a in short_list:
 				for b in a:
 					words.append(b)
+
+			print('execute begain 2')
+			cursor.execute(sql1)
+			results1 = cursor.fetchall()
+			project_nms = [result['project_nm'] for result in results1]
+			project_list = [list(jieba.cut(project_nm)) for project_nm in project_nms]
 			for c in project_list:
 				for d in c:
 					words.append(d)
-
 			word_set = set(words)
-			red = QueueRedis()
 
+			red = QueueRedis()
 			for word in word_set:
 				red.send_to_queue(key, word)
 				print(str(word))
