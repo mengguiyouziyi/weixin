@@ -3,8 +3,6 @@
 import os
 import sys
 import jieba
-import time
-from datetime import datetime
 from os.path import dirname
 
 import pymysql
@@ -54,10 +52,6 @@ def send_key(key):
 		print(e.with_traceback())
 	finally:
 		mysql.close()
-
-
-
-
 
 
 if __name__ == '__main__':
