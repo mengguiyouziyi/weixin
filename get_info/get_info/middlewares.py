@@ -7,6 +7,8 @@
 
 import base64
 from random import choice
+from get_info.utils.RedisClient import RedisClient
+from scrapy.exceptions import IgnoreRequest
 import time
 
 # 代理服务器
@@ -39,8 +41,18 @@ proxyAuth = "Basic " + base64.urlsafe_b64encode(bytes((proxyUser + ":" + proxyPa
 
 class ProxyMiddleware(object):
 	def process_request(self, request, spider):
-		request.meta["proxy"] = proxyServer
-		request.headers["Proxy-Authorization"] = proxyAuth
+		if spider.name == 'search':
+			request.meta["proxy"] = proxyServer
+			request.headers["Proxy-Authorization"] = proxyAuth
+		elif spider.name == 'detail':
+			redis_con = RedisClient('useful_proxy', 'a027.hb2.innotree.org', 6379)
+			thisip = redis_con.get()
+			if not thisip:
+				raise IgnoreRequest
+			print("this is ip:" + thisip)
+			request.meta["proxy"] = "http://" + thisip
+		else:
+			raise IgnoreRequest
 
 
 class RetryMiddleware(object):
