@@ -12,13 +12,14 @@ sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8')
 
 class InfoSpider(scrapy.Spider):
 	name = 'detail'
-	custom_settings = {
-		'DOWNLOAD_DELAY': 3,
-		'DOWNLOADER_MIDDLEWARES': {
-			'get_info.middlewares.RetryMiddleware': 110,
-			'get_info.middlewares.RotateUserAgentMiddleware': 2,
-		}
-	}
+	# custom_settings = {
+	# 	'DOWNLOAD_DELAY': 3,
+	# 	'DOWNLOADER_MIDDLEWARES': {
+	#
+	# 		'get_info.middlewares.RetryMiddleware': 110,
+	# 		'get_info.middlewares.RotateUserAgentMiddleware': 2,
+	# 	}
+	# }
 
 	def start_requests(self):
 		x = 0
