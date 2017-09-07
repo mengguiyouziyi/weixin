@@ -10,17 +10,17 @@ from get_info.settings import SQL_DATETIME_FORMAT
 
 
 class InfoSpider(scrapy.Spider):
-	name = 'info'
+	name = 'search'
 	url = 'http://weixin.sogou.com/weixin?query={}&_sug_type_=&sut=1978&lkt=1%2C1504603223573%2C1504603223573&s_from=input&_sug_=y&type=1&sst0=1504603223676&page=1&ie=utf8&w=01019900&dr=1'
 
 	def start_requests(self):
-		# while True:
-		# 	wx_search = get_key('wx_search')
-		wx_search = '阿里'
-		if not wx_search:
-			raise CloseSpider()
-		url = self.url.format(wx_search)
-		yield scrapy.Request(url, dont_filter=True, meta={'dont_redirect': True})
+		while True:
+			wx_search = get_key('weixin_word')
+		# for wx_search in ['阿里', '腾讯', '百度']:
+			if not wx_search:
+				raise CloseSpider()
+			url = self.url.format(wx_search)
+			yield scrapy.Request(url, dont_filter=True, meta={'dont_redirect': True})
 
 	def parse(self, response):
 		# print(response.request.meta.get('depth', ''))
@@ -42,43 +42,20 @@ class InfoSpider(scrapy.Spider):
 			feature = ''.join(feature) if feature else ''
 			comp = obj.xpath('./dl[2]/dd//text()').extract_first()
 			comp = comp if comp else ''
+			url_dt = obj.xpath('.//div[@class="txt-box"]//p[@class="tit"]/a/@href').extract_first()
 
 			item["pub_name"] = name
 			item["pic_url"] = pic_url
 			item["weixin"] = weixin
 			item["comp"] = comp
+			item["url_dt"] = url_dt
 			item["crawlTime"] = datetime.now().strftime(SQL_DATETIME_FORMAT)
 			# print(len(feature))
-			if len(feature) >= 102:
-				url_dt = obj.xpath('.//div[@class="txt-box"]//p[@class="tit"]/a/@href').extract_first()
-				# print(name+"~~~~~~~~"+url_dt)
-				yield scrapy.Request(url_dt, meta={'item': item, 'retrys': 0}, callback=self.parse_detail, dont_filter=True)
-			else:
-				item["feature"] = feature
-				yield item
+			item["feature"] = feature if len(feature) < 102 else ''
+			yield item
 
 		next_url = select.xpath('//a[@id="sogou_next"]/@href').extract_first()
 		if next_url:
 			next_url = urljoin(response.url, next_url)
 			yield scrapy.Request(next_url, dont_filter=True, meta={'dont_redirect': True})
 
-	def parse_detail(self, response):
-		item = response.meta.get('item', {})
-		retrys = response.meta.get('retrys', 0)
-		if retrys > 3:
-			return
-
-		if not item:
-			return
-		if '验证码' in response.text:
-			retrys += 1
-			# print('验证码：：：status:%s~~~retring~~~title:%s' % (str(response.status), response.url))
-			yield scrapy.Request(response.request.url, meta={'item': item, 'retrys': retrys}, callback=self.parse_detail,
-			                     dont_filter=True)
-		else:
-			select = Selector(response=response)
-			feature = select.xpath('//ul[@class="profile_desc"]/li[1]/div/@title').extract_first()
-			item["feature"] = feature
-
-			# print(item['pub_name'] + "~~~~~~~~" + str(feature))
-			yield item

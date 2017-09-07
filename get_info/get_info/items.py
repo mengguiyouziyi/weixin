@@ -15,4 +15,5 @@ class GetInfoItem(scrapy.Item):
     weixin = scrapy.Field()
     feature = scrapy.Field()
     comp = scrapy.Field()
+    url_dt = scrapy.Field()
     crawlTime = scrapy.Field()

@@ -42,18 +42,11 @@ class ProxyMiddleware(object):
 		request.meta["proxy"] = proxyServer
 		request.headers["Proxy-Authorization"] = proxyAuth
 
-	# def process_response(self, request, response, spider):
-	# 	if '验证码' in response.text:
-	# 		print('验证码：：：status:%s~~~retring~~~title:%s' % (str(response.status), response.url))
-	# 		return request.copy()
-	# 	else:
-	# 		return response
-
 
 class RetryMiddleware(object):
 	def process_response(self, request, response, spider):
 		if response.status in [429, 302]:
-			print('status:%s~~~retring~~~title:%s' % (str(response.status), response.url))
+			# print('status:%s~~~retring~~~title:%s' % (str(response.status), response.url))
 			return request.copy()
 		# elif '验证码' in response.text:
 		# 	print('验证码：：：status:%s~~~retring~~~title:%s' % (str(response.status), response.url))

@@ -19,10 +19,17 @@ class MysqlPipeline(object):
 		self.cursor = self.conn.cursor()
 
 	def process_item(self, item, spider):
-		# sql = """insert into kuchuan_all(id, app_package, down, trend) VALUES(%s, %s, %s, %s) ON DUPLICATE KEY UPDATE app_package=VALUES(app_package), down=VALUES(down), down=VALUES(trend)"""
-		sql = """replace into weixin_base_info(pub_name, pic_url, weixin, feature, comp, crawlTime)
-                VALUES(%s, %s, %s, %s, %s, %s)"""
-		args = (item["pub_name"], item['pic_url'], item["weixin"], item["feature"], item["comp"], item["crawlTime"])
-		self.cursor.execute(sql, args=args)
-		self.conn.commit()
-		print(str(item['pub_name']))
+		if spider.name == 'search':
+			# sql = """insert into kuchuan_all(id, app_package, down, trend) VALUES(%s, %s, %s, %s) ON DUPLICATE KEY UPDATE app_package=VALUES(app_package), down=VALUES(down), down=VALUES(trend)"""
+			sql = """replace into weixin_base_info(pub_name, pic_url, weixin, feature, comp, url_dt,crawlTime)
+	                VALUES(%s, %s, %s, %s, %s, %s, %s)"""
+			args = (item["pub_name"], item['pic_url'], item["weixin"], item["feature"], item["comp"], item['url_dt'], item["crawlTime"])
+			self.cursor.execute(sql, args=args)
+			self.conn.commit()
+			print(str(item['pub_name']))
+		elif spider.name == 'detail':
+			sql = """update weixin_base_info set feature=%s WHERE pub_name=%s"""
+			args = (item["feature"], item["pub_name"])
+			self.cursor.execute(sql, args=args)
+			self.conn.commit()
+			print(str(item['pub_name']))
