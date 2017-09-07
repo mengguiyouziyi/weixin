@@ -2,7 +2,7 @@
 import scrapy
 from scrapy.selector import Selector
 from get_info.items import GetInfoItem
-from get_info.utils.get import get_key
+from get_info.utils.get1 import get_key
 
 
 class InfoSpider(scrapy.Spider):
