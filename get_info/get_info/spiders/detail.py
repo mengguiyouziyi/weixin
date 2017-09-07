@@ -48,7 +48,7 @@ class InfoSpider(scrapy.Spider):
 			return
 		if '验证码' in response.text:
 			retrys += 1
-			print('check：：：status:%s~~~retring~~~title:%s' % (str(response.status), response.url))
+			print('check')
 			yield scrapy.Request(response.request.url, meta={'item': item, 'retrys': retrys}, dont_filter=True)
 		else:
 			select = Selector(response=response)
