@@ -3,6 +3,7 @@
 import os
 import sys
 import jieba
+import traceback
 from os.path import dirname
 
 import pymysql
@@ -51,7 +52,7 @@ def send_key(key):
 				print(str(word))
 
 	except Exception as e:
-		print(e.with_traceback())
+		traceback.print_exc()
 	finally:
 		mysql.close()
 
