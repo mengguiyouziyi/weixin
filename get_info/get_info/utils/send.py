@@ -51,7 +51,7 @@ def send_key(key):
 				print(str(word))
 
 	except Exception as e:
-		print(e)
+		print(e.with_traceback())
 	finally:
 		mysql.close()
 
