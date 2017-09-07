@@ -23,20 +23,17 @@ def send_key(key):
 	                        charset='utf8', cursorclass=pymysql.cursors.DictCursor)
 	cursor = mysql.cursor()
 	try:
-		# loc = 0
+		loc = 0
 		while True:
 			# try:
-
-			sql = """select pub_name,url_dt from weixin_base_info where feature='' ORDER by id limit 1000"""
-			cursor.execute(sql)
+			sql = """select pub_name,url_dt from weixin_base_info where feature='' ORDER by id limit %s, 2000"""
+			cursor.execute(sql, (loc,))
 			results = cursor.fetchall()
 			pub_names = [result['pub_name'] + '~' + result['url_dt'] for result in results]
-			position = len(pub_names)
 			for p in pub_names:
 				red.send_to_queue(key, p)
 				print(str(p))
-			# loc += position
-			cursor.scroll(position, mode='relative')
+			loc += len(pub_names)
 			print('等待5秒')
 			time.sleep(5)
 
