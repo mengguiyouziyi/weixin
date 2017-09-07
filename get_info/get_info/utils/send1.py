@@ -32,7 +32,7 @@ def send_key(key):
 			pub_names = [result['pub_name'] + '~' + result['url_dt'] for result in results]
 			for p in pub_names:
 				red.send_to_queue(key, p)
-				# print(str(p))
+				print(1)
 			loc += len(pub_names)
 			print('等待120秒')
 			time.sleep(120)

@@ -6,6 +6,9 @@
 # See: http://doc.scrapy.org/en/latest/topics/item-pipeline.html
 
 import pymysql
+import io
+import sys
+sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8')
 
 
 class MysqlPipeline(object):

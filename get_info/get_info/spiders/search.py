@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 import scrapy
+import time
 from datetime import datetime
 from scrapy.exceptions import CloseSpider
 from scrapy.selector import Selector
@@ -14,11 +15,16 @@ class InfoSpider(scrapy.Spider):
 	url = 'http://weixin.sogou.com/weixin?query={}&_sug_type_=&sut=1978&lkt=1%2C1504603223573%2C1504603223573&s_from=input&_sug_=y&type=1&sst0=1504603223676&page=1&ie=utf8&w=01019900&dr=1'
 
 	def start_requests(self):
+		x = 0
 		while True:
 			wx_search = get_key('weixin_word')
 		# for wx_search in ['阿里', '腾讯', '百度']:
 			if not wx_search:
-				raise CloseSpider()
+				x += 1
+				if x > 5:
+					raise CloseSpider()
+				time.sleep(120)
+				continue
 			url = self.url.format(wx_search)
 			yield scrapy.Request(url, dont_filter=True, meta={'dont_redirect': True})
 

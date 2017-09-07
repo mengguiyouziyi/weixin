@@ -1,8 +1,13 @@
 # -*- coding: utf-8 -*-
 import scrapy
+import time
+from scrapy.exceptions import CloseSpider
 from scrapy.selector import Selector
 from get_info.items import GetInfoItem
 from get_info.utils.get1 import get_key
+import io
+import sys
+sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8')
 
 
 class InfoSpider(scrapy.Spider):
@@ -16,9 +21,14 @@ class InfoSpider(scrapy.Spider):
 	}
 
 	def start_requests(self):
+		x = 0
 		while True:
 			weixin_detail = get_key('weixin_detail')
 			if not weixin_detail:
+				x += 1
+				if x > 10:
+					raise CloseSpider()
+				time.sleep(120)
 				continue
 		# weixin_details = ['腾讯科技~http://mp.weixin.qq.com/profile?src=3&timestamp=1504751774&ver=1&signature=RPE1cr62WFqkbDhfA9KUGk3nggerrJoxhdtkU4vZSKqYXaxyL3*FqZQiOQ5ErnCjsRlu4eHclZqrY1fZ4g3o6A==', '阿里装饰~http://mp.weixin.qq.com/profile?src=3&timestamp=1504751774&ver=1&signature=3BujAnQm9OKqdljNIfO3-UU-d2Lc1GHe4-Pl6CqxBlsOvaap5OpV-9gsbmLcYJ*GQi9Sp5F1L1*eIiIwgYx0Gw==', '阿里聚安全~http://mp.weixin.qq.com/profile?src=3&timestamp=1504751774&ver=1&signature=RJG4GxEXAWgYFPTDAf53cmRCJFdrbV5NCraU8cXG3IPOle3rx7NME2oHvgudRsfTo3iOy4VhWxKprzwVmeYtcQ==']
 		# for weixin_detail in weixin_details:
@@ -38,7 +48,7 @@ class InfoSpider(scrapy.Spider):
 			return
 		if '验证码' in response.text:
 			retrys += 1
-			# print('验证码：：：status:%s~~~retring~~~title:%s' % (str(response.status), response.url))
+			print('check：：：status:%s~~~retring~~~title:%s' % (str(response.status), response.url))
 			yield scrapy.Request(response.request.url, meta={'item': item, 'retrys': retrys}, dont_filter=True)
 		else:
 			select = Selector(response=response)
