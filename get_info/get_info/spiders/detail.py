@@ -25,7 +25,7 @@ class InfoSpider(scrapy.Spider):
 			'postman-token': "04f4983a-91b5-ebc9-1131-136997df33a2"
 		}
 	}
-	cookie = "RK=mANPtD8eQR; pgv_pvi=7332012032; sd_userid=54101497259025450; sd_cookie_crttime=1497259025450; tvfe_boss_uuid=2df455c17b493681; ptui_loginuin=1054542506; pac_uid=1_775618369; pgv_pvid=9631912360; o_cookie=775618369; ptisp=cnc; ptcz=373bd6a23bc86488efcf835f7b525ab131e8b91a6a31139a4634e4593b1cbf8c; pt2gguin=o0775618369; uin=o0775618369; skey=@fZ9Q2huZl",
+	cookie = "RK=mANPtD8eQR; pgv_pvi=7332012032; sd_userid=54101497259025450; sd_cookie_crttime=1497259025450; tvfe_boss_uuid=2df455c17b493681; ptui_loginuin=1054542506; pac_uid=1_775618369; pgv_pvid=9631912360; o_cookie=775618369; ptisp=cnc; ptcz=373bd6a23bc86488efcf835f7b525ab131e8b91a6a31139a4634e4593b1cbf8c; pt2gguin=o0775618369; uin=o0775618369; skey=@fZ9Q2huZl"
 	cookie_dict = dict((line.split('=') for line in cookie.strip().split(";")))
 
 	def start_requests(self):
