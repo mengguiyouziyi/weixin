@@ -15,7 +15,7 @@ import pymysql
 import traceback
 from scrapy import Selector
 
-conn = pymysql.connect(host='etl2.innotree.org', port=3308, user='spider', password='spider', db='spider',
+conn = pymysql.connect(host='etl1.innotree.org', port=3308, user='spider', password='spider', db='spider',
                        charset='utf8', cursorclass=pymysql.cursors.DictCursor)
 cursor = conn.cursor()
 
