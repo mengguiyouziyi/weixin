@@ -1,3 +1,11 @@
+import os
+import sys
+
+f = os.path.abspath(os.path.dirname(__file__))
+ff = os.path.dirname(f)
+fff = os.path.dirname(ff)
+sys.path.extend([f, ff, fff])
+
 import base64
 import codecs
 import time
@@ -61,8 +69,10 @@ headers = {
 }
 
 
-with codecs.open('/Users/menggui/Desktop/project/weixin/url_to_intro/weixin_url_all.log', 'r', 'cp1252') as f:
+with codecs.open('weixin_quchong_all.log', 'r', 'cp1252') as f:
 	for i, line in enumerate(f):
+		if i > 12000:
+			continue
 		print(i)
 		try:
 			biz_b = line[:16]
@@ -92,7 +102,6 @@ with codecs.open('/Users/menggui/Desktop/project/weixin/url_to_intro/weixin_url_
 						feature = sbody
 			# weixin_dict = {'name': name, 'weixin_hao': weixin_hao, 'feature': feature}
 			# weixin_li.append(weixin_dict)
-			print(url)
 			sql = """insert into weixin_public (detail_url, biz, weixin_name, weixin_hao, feature) VALUES (%s, %s, %s, %s, %s)"""
 			values = [url, biz, weixin_name, weixin_hao, feature]
 			sql1 = """insert into weixin_public (detail_url, biz, weixin_name, weixin_hao) VALUES (%s, %s, %s, %s)"""
@@ -105,7 +114,7 @@ with codecs.open('/Users/menggui/Desktop/project/weixin/url_to_intro/weixin_url_
 				continue
 			finally:
 				conn.commit()
-				time.sleep(random.randint(3, 6))
+				time.sleep(random.randint(4, 7))
 		except:
 			traceback.print_exc()
 			continue
