@@ -61,9 +61,9 @@ class RedisClient(object):
 	def getAll(self):
 		# return self.conn.hgetall(self.key).fields()
 		# python3 redis返回bytes类型,需要解码
-		# if sys.version_info.major == 3:
-		# 	return [field.decode('utf-8') for field in self.conn.hgetall(self.key).fields()]
-		# else:
+		if sys.version_info.major == 3:
+			return {field.decode('utf-8'): value for field, value in self.conn.hgetall(self.key).items()}
+		else:
 			return self.conn.hgetall(self.key)
 			# return self.conn.smembers(self.key)
 
