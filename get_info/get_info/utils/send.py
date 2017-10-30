@@ -22,27 +22,31 @@ def send_key(key):
 	                        charset='utf8', cursorclass=pymysql.cursors.DictCursor)
 	try:
 		with mysql.cursor() as cursor:
-			sql = """select shortname from comp_shortname"""
-			sql1 = """select project_nm from project_nm"""
+			sql = """select weixin_name from weixin_public"""
+			sql1 = """select weixin_name from weixin_public_name_num"""
 			print('execute begain')
 			words = []
 
 			cursor.execute(sql)
 			results = cursor.fetchall()
-			shortnames = [result['shortname'] for result in results]
-			short_list = [list(jieba.cut(shortname)) for shortname in shortnames]
-			for a in short_list:
-				for b in a:
-					words.append(b)
+			shortnames = [result['weixin_name'] for result in results if result]
+			# short_list = [list(jieba.cut(shortname)) for shortname in shortnames]
+			# for a in short_list:
+			# 	for b in a:
+			# 		words.append(b)
+			for a in shortnames:
+				words.append(a)
 
 			print('execute begain 2')
 			cursor.execute(sql1)
 			results1 = cursor.fetchall()
-			project_nms = [result['project_nm'] for result in results1]
-			project_list = [list(jieba.cut(project_nm)) for project_nm in project_nms]
-			for c in project_list:
-				for d in c:
-					words.append(d)
+			project_nms = [result['weixin_name'] for result in results1 if result]
+			# project_list = [list(jieba.cut(project_nm)) for project_nm in project_nms]
+			# for c in project_list:
+			# 	for d in c:
+			# 		words.append(d)
+			for c in project_nms:
+				words.append(c)
 			word_set = set(words)
 
 			red = QueueRedis()
@@ -50,7 +54,7 @@ def send_key(key):
 				red.send_to_queue(key, word)
 				print(str(word))
 
-	except Exception as e:
+	except Exception:
 		traceback.print_exc()
 	finally:
 		mysql.close()
