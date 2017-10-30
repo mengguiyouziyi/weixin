@@ -26,7 +26,7 @@ class InfoSpider(scrapy.Spider):
 				time.sleep(120)
 				continue
 			url = self.url.format(wx_search.strip())
-			yield scrapy.Request(url, dont_filter=True, meta={'dont_redirect': True})
+			yield scrapy.Request(url, dont_filter=True)
 
 	def parse(self, response):
 		# print(response.request.meta.get('depth', ''))
