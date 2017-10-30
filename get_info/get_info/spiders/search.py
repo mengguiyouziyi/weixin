@@ -25,7 +25,7 @@ class InfoSpider(scrapy.Spider):
 					raise CloseSpider()
 				time.sleep(120)
 				continue
-			url = self.url.format(wx_search)
+			url = self.url.format(wx_search.strip())
 			yield scrapy.Request(url, dont_filter=True, meta={'dont_redirect': True})
 
 	def parse(self, response):
