@@ -21,9 +21,9 @@ class MysqlPipeline(object):
 	def process_item(self, item, spider):
 		if spider.name == 'search':
 			# sql = """insert into kuchuan_all(id, app_package, down, trend) VALUES(%s, %s, %s, %s) ON DUPLICATE KEY UPDATE app_package=VALUES(app_package), down=VALUES(down), down=VALUES(trend)"""
-			sql = """replace into weixin_base_info(pub_name, pic_url, weixin, feature, comp, url_dt,crawlTime)
-	                VALUES(%s, %s, %s, %s, %s, %s, %s)"""
-			args = (item["pub_name"], item['pic_url'], item["weixin"], item["feature"], item["comp"], item['url_dt'], item["crawlTime"])
+			sql = """replace into weixin_base_info(pub_name, pic_url, weixin, feature, comp, url_dt)
+	                VALUES(%s, %s, %s, %s, %s, %s)"""
+			args = (item["pub_name"], item['pic_url'], item["weixin"], item["feature"], item["comp"], item['url_dt'])
 			self.cursor.execute(sql, args=args)
 			self.conn.commit()
 			print(str(item['pub_name']))

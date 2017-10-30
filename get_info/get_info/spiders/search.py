@@ -7,7 +7,7 @@ from scrapy.selector import Selector
 from urllib.parse import urljoin
 from get_info.items import GetInfoItem
 from get_info.utils.get import get_key
-from get_info.settings import SQL_DATETIME_FORMAT
+# from get_info.settings import SQL_DATETIME_FORMAT
 
 
 class InfoSpider(scrapy.Spider):
@@ -55,7 +55,7 @@ class InfoSpider(scrapy.Spider):
 			item["weixin"] = weixin
 			item["comp"] = comp
 			item["url_dt"] = url_dt
-			item["crawlTime"] = datetime.now().strftime(SQL_DATETIME_FORMAT)
+			# item["crawlTime"] = datetime.now().strftime(SQL_DATETIME_FORMAT)
 			# print(len(feature))
 			item["feature"] = feature if len(feature) < 102 else ''
 			yield item

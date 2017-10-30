@@ -16,4 +16,4 @@ class GetInfoItem(scrapy.Item):
     feature = scrapy.Field()
     comp = scrapy.Field()
     url_dt = scrapy.Field()
-    crawlTime = scrapy.Field()
+    # crawlTime = scrapy.Field()

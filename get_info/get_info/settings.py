@@ -153,4 +153,4 @@ ITEM_PIPELINES = {
 # HTTPCACHE_IGNORE_HTTP_CODES = []
 # HTTPCACHE_STORAGE = 'scrapy.extensions.httpcache.FilesystemCacheStorage'
 
-SQL_DATETIME_FORMAT = "%Y-%m-%d %H:%M:%S"
+# SQL_DATETIME_FORMAT = "%Y-%m-%d %H:%M:%S"
