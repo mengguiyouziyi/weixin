@@ -16,7 +16,7 @@ import traceback
 from scrapy import Selector
 
 conn = pymysql.connect(host='172.31.215.38', port=3306, user='spider', password='spider', db='spider',
-                       cursorclass=pymysql.cursors.DictCursor)
+                       charset='utf8', cursorclass=pymysql.cursors.DictCursor)
 cursor = conn.cursor()
 
 USER_AGENT_CHOICES = [
