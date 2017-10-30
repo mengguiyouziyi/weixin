@@ -6,7 +6,7 @@ from scrapy.selector import Selector
 from urllib.parse import urljoin
 from get_info.items import GetInfoItem
 from get_info.utils.get import get_key
-from get_info.settings import SQL_DATETIME_FORMAT
+# from get_info.settings import SQL_DATETIME_FORMAT
 
 
 class InfoSpider(scrapy.Spider):
@@ -47,7 +47,7 @@ class InfoSpider(scrapy.Spider):
 			item["pic_url"] = pic_url
 			item["weixin"] = weixin
 			item["comp"] = comp
-			item["crawlTime"] = datetime.now().strftime(SQL_DATETIME_FORMAT)
+			# item["crawlTime"] = datetime.now().strftime(SQL_DATETIME_FORMAT)
 			# print(len(feature))
 			if len(feature) >= 102:
 				url_dt = obj.xpath('.//div[@class="txt-box"]//p[@class="tit"]/a/@href').extract_first()
