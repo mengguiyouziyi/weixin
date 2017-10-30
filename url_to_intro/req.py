@@ -16,7 +16,7 @@ import traceback
 from scrapy import Selector
 
 conn = pymysql.connect(host='172.31.215.38', port=3306, user='spider', password='spider', db='spider',
-                       charset='utf8', cursorclass=pymysql.cursors.DictCursor)
+                       cursorclass=pymysql.cursors.DictCursor)
 cursor = conn.cursor()
 
 USER_AGENT_CHOICES = [
@@ -71,8 +71,8 @@ headers = {
 
 with codecs.open('weixin_quchong_all_1.log', 'r', 'cp1252') as f:
 	for i, line in enumerate(f):
-		# if i <= 24000 and i != 12000:
-		# 	continue
+		if i <= 24000 and i != 12000:
+			continue
 		print(i)
 		try:
 			# biz_b = line[:16]
