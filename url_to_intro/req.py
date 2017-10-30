@@ -71,7 +71,10 @@ headers = {
 
 with codecs.open('weixin_quchong_all_1.log', 'r', 'cp1252') as f:
 	for i, line in enumerate(f):
-		if i >= 39000:
+		# if i >= 39000:
+		# if i >= 39000:
+		if 117000 >= i > 7800:
+		# if i >= 39000:
 			continue
 		print(i)
 		try:
