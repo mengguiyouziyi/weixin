@@ -6,7 +6,7 @@ ff = os.path.dirname(f)
 fff = os.path.dirname(ff)
 sys.path.extend([f, ff, fff])
 
-import base64
+# import base64
 import codecs
 import time
 import requests
@@ -15,7 +15,7 @@ import pymysql
 import traceback
 from scrapy import Selector
 
-conn = pymysql.connect(host='etl1.innotree.org', port=3308, user='spider', password='spider', db='spider',
+conn = pymysql.connect(host='172.31.215.38', port=3306, user='spider', password='spider', db='spider',
                        charset='utf8', cursorclass=pymysql.cursors.DictCursor)
 cursor = conn.cursor()
 
@@ -69,19 +69,20 @@ headers = {
 }
 
 
-with codecs.open('weixin_quchong_all.log', 'r', 'cp1252') as f:
+with codecs.open('weixin_quchong_all_1.log', 'r', 'cp1252') as f:
 	for i, line in enumerate(f):
-		if i <= 24000 and i != 12000:
-			continue
+		# if i <= 24000 and i != 12000:
+		# 	continue
 		print(i)
 		try:
-			biz_b = line[:16]
-			url = line[17:]
-			# if not url.startswith('http'):
-			# 	continue
-			biz_str = base64.urlsafe_b64decode(biz_b)
-			# if not biz_str.isdigit() or not url.startswith('http://mp.weixin.qq.com/s?__biz='):
-			# 	continue
+			# biz_b = line[:16]
+			# url = line[17:]
+			# biz_str = base64.urlsafe_b64decode(biz_b)
+			x = line.split('	') if '	' in line else line.split('	')
+			if len(x) < 2:
+				continue
+			biz_str = x[0].replace('??', '')
+			url = x[1]
 			try:
 				response = requests.request("GET", url, headers=headers, timeout=5)
 			except:
@@ -102,9 +103,9 @@ with codecs.open('weixin_quchong_all.log', 'r', 'cp1252') as f:
 						feature = sbody
 			# weixin_dict = {'name': name, 'weixin_hao': weixin_hao, 'feature': feature}
 			# weixin_li.append(weixin_dict)
-			sql = """insert into weixin_public (detail_url, biz, weixin_name, weixin_hao, feature) VALUES (%s, %s, %s, %s, %s)"""
+			sql = """insert into weixin_public_zhejiang (detail_url, biz, weixin_name, weixin_hao, feature) VALUES (%s, %s, %s, %s, %s)"""
 			values = [url, biz, weixin_name, weixin_hao, feature]
-			sql1 = """insert into weixin_public (detail_url, biz, weixin_name, weixin_hao) VALUES (%s, %s, %s, %s)"""
+			sql1 = """insert into weixin_public_zhejiang (detail_url, biz, weixin_name, weixin_hao) VALUES (%s, %s, %s, %s)"""
 			values1 = [url, biz, weixin_name, weixin_hao]
 			try:
 				cursor.execute(sql, values)

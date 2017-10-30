@@ -8,8 +8,9 @@ self.key为Redis中的一个field
 
 # import json
 # import random
-import redis
+# import redis
 import sys
+from rediscluster import StrictRedisCluster
 
 
 class RedisClient(object):
@@ -17,7 +18,19 @@ class RedisClient(object):
 	Reids client
 	"""
 
-	def __init__(self, key, host, port=6379, db=0):
+	# def __init__(self, key, host, port=6379, db=0):
+	# 	"""
+	# 	init
+	# 	:param key:
+	# 	:param host:
+	# 	:param port:
+	# 	:param db:
+	# 	"""
+	# 	self.key = key
+	# 	pool = redis.ConnectionPool(host=host, port=port, db=db)
+	# 	self.conn = redis.StrictRedis(connection_pool=pool, decode_responses=True)
+
+	def __init__(self, key, startup_nodes):
 		"""
 		init
 		:param key:
@@ -26,8 +39,7 @@ class RedisClient(object):
 		:param db:
 		"""
 		self.key = key
-		pool = redis.ConnectionPool(host=host, port=port, db=db)
-		self.conn = redis.StrictRedis(connection_pool=pool, decode_responses=True)
+		self.conn = StrictRedisCluster(startup_nodes=startup_nodes, decode_responses=True)
 
 	def delete(self, field):
 		"""
@@ -173,21 +185,32 @@ class RedisClient(object):
 
 
 if __name__ == '__main__':
-	redis_con = RedisClient('comp_gaoxin_only_id', 'a027.hb2.innotree.org', 6379)
-	print(redis_con.getAll())
-# redis_con.put('abc')
-# redis_con.put('123')
-# redis_con.put('123.115.235.221:8800')
-# redis_con.put(['123', '115', '235.221:8800'])
-# print(redis_con.getAll())
-# redis_con.delete('abc')
-# print(redis_con.getAll())
+	# redis_con = RedisClient('comp_gaoxin_only_id', 'a027.hb2.innotree.org', 6379)
+	# print(redis_con.getAll())
+	# redis_con.put('abc')
+	# redis_con.put('123')
+	# redis_con.put('123.115.235.221:8800')
+	# redis_con.put(['123', '115', '235.221:8800'])
+	# print(redis_con.getAll())
+	# redis_con.delete('abc')
+	# print(redis_con.getAll())
 
-# print(redis_con.getAll())
-# redis_con.changeTable('raw_proxy')
-# redis_con.pop()
+	# print(redis_con.getAll())
+	# redis_con.changeTable('raw_proxy')
+	# redis_con.pop()
 
-# redis_con.put('132.112.43.221:8888')
-# redis_con.changeTable('proxy')
-# print(redis_con.get_status())
-# print(redis_con.getAll())
+	# redis_con.put('132.112.43.221:8888')
+	# redis_con.changeTable('proxy')
+	# print(redis_con.get_status())
+	# print(redis_con.getAll())
+
+	startup_nodes = [{"host": "172.29.237.209", "port": "7000"},
+	                 {"host": "172.29.237.209", "port": "7001"},
+	                 {"host": "172.29.237.209", "port": "7002"},
+	                 {"host": "172.29.237.214", "port": "7003"},
+	                 {"host": "172.29.237.214", "port": "7004"},
+	                 {"host": "172.29.237.214", "port": "7005"},
+	                 {"host": "172.29.237.215", "port": "7006"},
+	                 {"host": "172.29.237.215", "port": "7007"},
+	                 {"host": "172.29.237.215", "port": "7008"}]
+
