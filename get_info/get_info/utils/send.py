@@ -1,7 +1,7 @@
 # coding:utf-8
 
 import os
-import jieba
+# import jieba
 import traceback
 from os.path import dirname
 
