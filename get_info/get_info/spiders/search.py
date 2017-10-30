@@ -63,5 +63,5 @@ class InfoSpider(scrapy.Spider):
 		next_url = select.xpath('//a[@id="sogou_next"]/@href').extract_first()
 		if next_url:
 			next_url = urljoin(response.url, next_url)
-			yield scrapy.Request(next_url, dont_filter=True, meta={'dont_redirect': True})
+			yield scrapy.Request(next_url, dont_filter=True)
 
