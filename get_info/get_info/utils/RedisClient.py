@@ -159,3 +159,4 @@ if __name__ == '__main__':
 
 	conn = StrictRedisCluster(startup_nodes=startup_nodes, decode_responses=True)
 	conn.lpush('nihao', 'dajiahao', 'shuihao')
+	print('ok')
