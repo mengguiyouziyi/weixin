@@ -1,9 +1,10 @@
 import os
 import sys
-from os.path import dirname
 
-father_path = os.path.abspath(dirname(__file__))
-sys.path.append(father_path)
+f = os.path.abspath(os.path.dirname(__file__))
+ff = os.path.dirname(f)
+fff = os.path.dirname(ff)
+sys.path.extend([f, ff, fff])
 from url_to_intro.info import mysql, rc
 
 cursor = mysql.cursor()

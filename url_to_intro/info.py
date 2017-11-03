@@ -1,12 +1,18 @@
 # coding:utf-8
 import os
 import sys
+
+f = os.path.abspath(os.path.dirname(__file__))
+ff = os.path.dirname(f)
+fff = os.path.dirname(ff)
+sys.path.extend([f, ff, fff])
 import pymysql
 from rediscluster import StrictRedisCluster
-from os.path import dirname
 
-father_path = os.path.abspath(dirname(__file__))
-sys.path.append(father_path)
+# from os.path import dirname
+#
+# father_path = os.path.abspath(dirname(__file__))
+# sys.path.append(father_path)
 startup_nodes = [{"host": "172.29.237.209", "port": "7000"},
                  {"host": "172.29.237.209", "port": "7001"},
                  {"host": "172.29.237.209", "port": "7002"},
@@ -19,7 +25,7 @@ startup_nodes = [{"host": "172.29.237.209", "port": "7000"},
 rc = StrictRedisCluster(startup_nodes=startup_nodes, decode_responses=True)
 
 mysql = pymysql.connect(host='172.31.215.38', port=3306, user='spider', password='spider', db='spider',
-                       charset='utf8', cursorclass=pymysql.cursors.DictCursor)
+                        charset='utf8', cursorclass=pymysql.cursors.DictCursor)
 USER_AGENT_CHOICES = [
 	'Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10_6_8; en-us) AppleWebKit/534.50 (KHTML, like Gecko) Version/5.1 Safari/534.50',
 	'Mozilla/5.0 (Windows; U; Windows NT 6.1; en-us) AppleWebKit/534.50 (KHTML, like Gecko) Version/5.1 Safari/534.50',
