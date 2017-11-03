@@ -26,7 +26,7 @@ headers = {
 
 cursor = mysql.cursor()
 while 1:
-	line = rc.blpop('weixin_zhejiang')
+	line = rc.lpop('weixin_zhejiang')
 	print(line)
 	if not line:
 		print('no url')
