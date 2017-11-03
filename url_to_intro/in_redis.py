@@ -13,5 +13,5 @@ cursor.execute(sql)
 results = cursor.fetchall()
 for i, r in enumerate(results):
 	value = r['biz'] + "~" + r['detail_url']
-	rc.rpush('weixin_zhejiang', value)
+	rc.lpush('weixin_zhejiang', value)
 	print(i, r['biz'])
