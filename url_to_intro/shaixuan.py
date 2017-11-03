@@ -1,20 +1,28 @@
+import os
+import sys
+
+f = os.path.abspath(os.path.dirname(__file__))
+ff = os.path.dirname(f)
+fff = os.path.dirname(ff)
+sys.path.extend([f, ff, fff])
 import codecs
-import pymysql
+from url_to_intro.info import mysql
 from traceback import print_exc
 
-conn = pymysql.connect(host='172.31.215.38', port=3306, user='spider', password='spider', db='spider',
-                       charset='utf8', cursorclass=pymysql.cursors.DictCursor)
-cursor = conn.cursor()
-sql = """insert into weixin_public_zhejiang_url (biz, detail_url) VALUES (%s, %s)"""
-quchong = set()
-try:
-	with codecs.open('gzhUrl_zhejiang_1022_quchong.log', 'r', 'cp1252') as f:
+
+def qu_chong(quchong, log_path):
+	with codecs.open(log_path, 'r', 'cp1252') as f:
 		for line in f:
 			if line not in quchong:
 				quchong.add(line)
 			else:
-				print('%s, 重复' % line)
+				# print('%s, 重复' % line)
 				continue
+
+
+def qingxi(quchong, mysql):
+	sql = """insert into weixin_public_guangdong_url (biz, detail_url) VALUES (%s, %s)"""
+	cursor = mysql.cursor()
 	xxx = []
 	for i, line in enumerate(quchong):
 		print(i, line)
@@ -30,7 +38,7 @@ try:
 			xxx.append((biz_b, url))
 			if len(xxx) == 1000:
 				cursor.executemany(sql, xxx)
-				conn.commit()
+				mysql.commit()
 				xxx.clear()
 			else:
 				continue
@@ -38,9 +46,20 @@ try:
 			print_exc()
 			continue
 	cursor.executemany(sql, xxx)
-	conn.commit()
+	mysql.commit()
 
-except:
-	print_exc()
-finally:
-	conn.close()
+
+if __name__ == '__main__':
+	log_path_list = [
+		'/Users/menggui/Desktop/project/weixin/url_to_intro/guandong/电信云测试环境_gzhUrl_广东_1022_{}.log'.format(i) for i in
+		range(1, 5)]
+	try:
+		quchong = set()
+		for log_path in log_path_list:
+			print(log_path)
+			qu_chong(quchong, log_path)
+		qingxi(quchong, mysql)
+	except:
+		print_exc()
+	finally:
+		mysql.close()

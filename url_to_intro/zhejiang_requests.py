@@ -57,13 +57,13 @@ while 1:
 
 	try:
 		cursor.execute(sql, values)
-	except:
-		print_exc()
+		print(biz)
+	except Exception as e:
+		print(biz, e)
 		sql1 = """insert into weixin_public_zhejiang (detail_url, biz, weixin_name, weixin_hao) VALUES (%s, %s, %s, %s)"""
 		values1 = [url, biz, weixin_name, weixin_hao]
 		cursor.execute(sql1, values1)
 		continue
 	finally:
-		print(biz)
 		mysql.commit()
 		time.sleep(random.randint(3, 6))
