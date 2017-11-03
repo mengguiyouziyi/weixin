@@ -32,7 +32,7 @@ while 1:
 		print('no url')
 		mysql.close()
 		sys.exit(1)
-	x = line[1].split('~')
+	x = line.split('~')
 	biz = x[0]
 	url = x[1]
 	try:
