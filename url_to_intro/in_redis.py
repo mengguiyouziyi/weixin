@@ -16,6 +16,6 @@ results = cursor.fetchall()
 for i, r in enumerate(results):
 	value = r['biz'] + "~" + r['detail_url']
 	rc.lpush('weixin_guangdong', value)
-	if i % 10000 == 0:
+	if i % 50000 == 0:
 		time.sleep(3)
 	print(i, r['biz'])
