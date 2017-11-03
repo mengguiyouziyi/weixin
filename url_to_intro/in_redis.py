@@ -7,6 +7,7 @@ fff = os.path.dirname(ff)
 sys.path.extend([f, ff, fff])
 from url_to_intro.info import mysql, rc
 
+rc.delete('weixin_zhejiang', 'weixin_zhejiang_yet')
 cursor = mysql.cursor()
 sql = """select biz, detail_url from weixin_public_zhejiang_url"""
 cursor.execute(sql)
