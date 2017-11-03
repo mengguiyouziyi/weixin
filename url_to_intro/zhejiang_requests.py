@@ -9,7 +9,7 @@ sys.path.extend([f, ff, fff])
 import time
 import requests
 import random
-from traceback import print_exc
+# from traceback import print_exc
 from url_to_intro.info import mysql, rc, USER_AGENT_CHOICES
 from scrapy import Selector
 
@@ -26,7 +26,7 @@ headers = {
 
 cursor = mysql.cursor()
 while 1:
-	line = rc.rpoplpush('weixin_zhejiang', 'weixin_zhejiang_yet')
+	line = rc.rpop('weixin_guangdong')
 	# print(line)
 	if not line:
 		print('no url')
@@ -38,6 +38,7 @@ while 1:
 	try:
 		response = requests.request("GET", url, headers=headers, timeout=5)
 	except:
+		rc.lpush('weixin_guangdong_error', line)
 		continue
 	sel = Selector(text=response.text)
 	weixin_name = sel.xpath('//strong[@class="profile_nickname"]/text()').extract_first()
@@ -52,7 +53,7 @@ while 1:
 				weixin_hao = sbody
 			elif '功能介绍' in word:
 				feature = sbody
-	sql = """insert into weixin_public_zhejiang (detail_url, biz, weixin_name, weixin_hao, feature) VALUES (%s, %s, %s, %s, %s)"""
+	sql = """insert into weixin_public_guangdong (detail_url, biz, weixin_name, weixin_hao, feature) VALUES (%s, %s, %s, %s, %s)"""
 	values = [url, biz, weixin_name, weixin_hao, feature]
 
 	try:
@@ -60,10 +61,11 @@ while 1:
 		print(biz)
 	except Exception as e:
 		print(biz, e)
-		sql1 = """insert into weixin_public_zhejiang (detail_url, biz, weixin_name, weixin_hao) VALUES (%s, %s, %s, %s)"""
+		rc.lpush('weixin_guangdong_error', line)
+		sql1 = """insert into weixin_public_guangdong (detail_url, biz, weixin_name, weixin_hao) VALUES (%s, %s, %s, %s)"""
 		values1 = [url, biz, weixin_name, weixin_hao]
 		cursor.execute(sql1, values1)
 		continue
 	finally:
 		mysql.commit()
-		time.sleep(random.randint(3, 6))
+		time.sleep(random.randint(4, 7))
