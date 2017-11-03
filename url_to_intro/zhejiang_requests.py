@@ -26,13 +26,13 @@ headers = {
 
 cursor = mysql.cursor()
 while 1:
-	line = rc.lpop('weixin_zhejiang')
-	print(line)
-	if not line:
-		print('no url')
-		mysql.close()
-		sys.exit(1)
-	x = line.split('~')
+	line = rc.blpop('weixin_zhejiang')
+	# print(line)
+	# if not line:
+	# 	print('no url')
+	# 	mysql.close()
+	# 	sys.exit(1)
+	x = line[1].split('~')
 	biz = x[0]
 	url = x[1]
 	try:
